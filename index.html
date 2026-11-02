@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Radar mais próximo à frente, com limite de velocidade, para Fortaleza e região metropolitana.">
+<title>Radar à frente · Fortaleza</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <h1 class="brand">Radar à frente <span class="brand-scope">Fortaleza e região</span></h1>
+  <p class="gps" id="gps" aria-live="polite">GPS desligado</p>
+</header>
+
+<main class="app" id="app" data-state="idle">
+  <section class="hud" aria-labelledby="hud-title">
+    <h2 class="sr-only" id="hud-title">Situação agora</h2>
+
+    <div class="readout">
+      <div class="speed" id="speedBox">
+        <p class="speed-label">Sua velocidade</p>
+        <p class="speed-value"><span id="speed">—</span><span class="unit">km/h</span></p>
+      </div>
+      <figure class="sign" id="sign" aria-label="Limite de velocidade">
+        <svg viewBox="0 0 120 120" role="img" aria-labelledby="signTitle">
+          <title id="signTitle">Velocidade máxima permitida</title>
+          <circle cx="60" cy="60" r="57" fill="#fff"/>
+          <circle cx="60" cy="60" r="49" fill="none" stroke="#d71920" stroke-width="15"/>
+          <text id="signNum" x="60" y="61" text-anchor="middle" dominant-baseline="central">—</text>
+        </svg>
+        <figcaption id="signCap">limite</figcaption>
+      </figure>
+    </div>
+
+    <p class="verdict" id="verdict" aria-live="assertive">Toque em Iniciar para ativar o GPS.</p>
+
+    <div class="target" id="target">
+      <p class="target-label" id="targetLabel">Próximo radar</p>
+      <p class="dist"><span id="dist">—</span><span class="unit" id="distUnit">m</span></p>
+      <div class="meter" id="meter" role="meter" aria-label="Aproximação do radar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="meterFill"></i></div>
+      <p class="addr" id="addr">Sem radar selecionado</p>
+      <p class="meta" id="meta">Os radares aparecem quando o GPS achar sua posição.</p>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="start" type="button">Iniciar</button>
+      <button class="btn-quiet" id="sound" type="button" aria-pressed="true">Som ligado</button>
+    </div>
+  </section>
+
+  <section class="panel" id="nextPanel" aria-labelledby="next-title">
+    <div class="panel-head">
+      <h2 id="next-title">Próximos no caminho</h2>
+      <p class="panel-note" id="nextNote">até 3 km</p>
+    </div>
+    <ol class="list" id="next">
+      <li class="empty">Nenhum radar listado ainda.</li>
+    </ol>
+  </section>
+
+  <section class="panel" id="scopePanel" aria-labelledby="scope-title">
+    <div class="panel-head">
+      <h2 id="scope-title">Ao redor</h2>
+      <p class="panel-note" id="scopeNote">raio de 2 km · topo = sua direção</p>
+    </div>
+    <svg class="scope" id="scope" viewBox="-110 -110 220 220" role="img" aria-label="Mapa dos radares num raio de 2 km"></svg>
+  </section>
+
+  <section class="panel" id="setPanel" aria-labelledby="set-title">
+    <div class="panel-head"><h2 id="set-title">Alertas</h2></div>
+    <div class="setting">
+      <p class="setting-label" id="alertLbl">Avisar a partir de</p>
+      <div class="seg" role="radiogroup" aria-labelledby="alertLbl" id="alertSeg">
+        <button type="button" role="radio" data-v="300">300 m</button>
+        <button type="button" role="radio" data-v="500">500 m</button>
+        <button type="button" role="radio" data-v="800">800 m</button>
+      </div>
+    </div>
+    <div class="setting">
+      <p class="setting-label" id="tolLbl">Alerta de excesso</p>
+      <div class="seg" role="radiogroup" aria-labelledby="tolLbl" id="tolSeg">
+        <button type="button" role="radio" data-v="0">acima do limite</button>
+        <button type="button" role="radio" data-v="5">+5 km/h</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p id="dataInfo">Carregando a base de radares…</p>
+    <p>Fontes: <a href="https://dados.fortaleza.ce.gov.br/dataset/fiscalizacao-eletronica" rel="noopener">AMC, Dados Abertos Fortaleza</a> (equipamentos e vias de 30, 40 e 50 km/h) e <a href="https://www.openstreetmap.org/copyright" rel="noopener">© contribuidores do OpenStreetMap</a> para a região metropolitana.</p>
+    <p>Os dados podem estar desatualizados. A sinalização da via sempre vale mais que este painel. Não mexa no celular dirigindo.</p>
+  </footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
